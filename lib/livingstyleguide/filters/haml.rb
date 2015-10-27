@@ -2,7 +2,7 @@ LivingStyleGuide::Example.add_filter :haml do
   begin
 
     require 'haml'
-    Haml::Options.defaults[:attr_wrapper] = '"'
+    Haml::Template.options[:attr_wrapper] = '"'
     @syntax = :haml
 
     pre_processor do |haml|

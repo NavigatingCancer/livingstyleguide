@@ -11,7 +11,7 @@ module LivingStyleGuide::SassExtensions::Functions
   end
 
   def global_variables
-    ruby = environment.global_env.instance_variable_get(:@vars)
+    ruby = environment().global_env.instance_variable_get(:@vars)
     sass_script = {}
     ruby.each do |name, value|
       sass_script[Sass::Script::String.new(name)] = value
