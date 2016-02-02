@@ -18,11 +18,21 @@ for(var e,l='article aside footer header nav section time picture'.split(' ');e=
 </head>
 
 <body class="livingstyleguide">
+
 <%= header %>
-<div class="livingstyleguide--container">
-<%= html %>
+
+<div class="livingstyleguide--container--wrap">
+  <div class="livingstyleguide--container">
+    <% markdown.each do |m| %>
+      <section>
+        <%= html m %>
+      </section>
+    <% end %>
+  </div>
 </div>
+
 <%= footer %>
+
 </body>
 
 </html>

@@ -20,7 +20,7 @@ module LivingStyleGuide
       @sass_options = sass_options
       @variables = {}
       @files = []
-      @markdown = ''
+      @markdown = []
     end
 
     def render
@@ -56,10 +56,10 @@ module LivingStyleGuide
       sass_engine.render
     end
 
-    def html
+    def html(content)
       renderer = RedcarpetHTML.new(@options, self)
       redcarpet = ::Redcarpet::Markdown.new(renderer, REDCARPET_RENDER_OPTIONS)
-      redcarpet.render(markdown)
+      redcarpet.render(content)
     end
 
     private
@@ -138,9 +138,13 @@ module LivingStyleGuide
         glob = "#{sass_filename.sub(/\.s[ac]ss$/, '')}.md"
         Dir.glob(glob) do |markdown_filename|
           next if files.include?(markdown_filename)
+          next if File.zero?(markdown_filename)
 
-          files << markdown_filename
-          @markdown << File.read(markdown_filename)
+          content = File.read(markdown_filename)
+          unless content.strip.empty?
+            files << markdown_filename
+            @markdown << content
+          end
         end
       end
     end
@@ -177,8 +181,12 @@ module LivingStyleGuide
       @engine.variables
     end
 
-    def html
-      @engine.html
+    def html(content)
+      @engine.html(content)
+    end
+
+    def markdown
+      @engine.markdown
     end
 
     def head
