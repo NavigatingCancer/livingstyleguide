@@ -24,28 +24,24 @@ class LivingStyleGuide::CodeBlock
     @language = language
   end
 
-  def render
-    highlight
+
+  def initialize(source, language = nil)
+    @source = source
+    @language = nil
+    @_language = language
   end
 
-  def highlight(code, language)
-    code ||= @source.strip
-    language ||= @language
-
-    code = ERB::Util.html_escape(code).gsub(/&quot;/, '"')
-    code = run_last_filter_hook(:syntax_highlight, code)
-    code = run_filter_hook(:filter_code, code)
-
+  def render
+    code = @source.strip
     formatter = Rouge::Formatters::HTML.new(css_class: 'highlight', line_numbers: true)
-    lexer_class = "Rouge::Lexers::#{language.to_s.split('-').join.classify}".constantize
+    lexer_class = "Rouge::Lexers::#{@_language.to_s.split('-').join.camelize}".constantize
     lexer = lexer_class.new
     output = formatter.format(lexer.lex(code))
-
     %Q(<style type="text/css">#{Rouge::Themes::Github.render(scope: '.highlight')}</style>
-    <div class="code-block">
-      <div class="lang">#{language}</div>
-      #{output}
-    </div>)
+      <div class="code-block">
+        <div class="lang">#{@_language}</div>
+        #{output}
+      </div>)
   end
 
 end

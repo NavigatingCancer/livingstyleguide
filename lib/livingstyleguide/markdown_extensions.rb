@@ -25,7 +25,8 @@ module LivingStyleGuide
       id = slug(text)
       klass = %w(page-title headline sub-headline sub-sub-headline)[header_level]
       header_level += 1
-      %Q(<h#{header_level} class="livingstyleguide--#{klass}" id="#{id}"><a class="livingstyleguide--anchor" href="##{id}"></a>#{text}</h#{header_level}>\n)
+      %Q(<header class="header-level-#{header_level}"><a class="livingstyleguide--anchor livingstyleguide--anchor-level-#{header_level}" href="##{id}"></a>
+        <h#{header_level} class="livingstyleguide--#{klass}" id="#{id}">#{text}</h#{header_level}></header>\n)
     end
 
     def paragraph(text)
